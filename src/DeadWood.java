@@ -100,7 +100,7 @@ public class DeadWood extends Application {
         });
 
     }
-//create instruction sub scene
+    //create instruction sub scene
     private void createInstructionSubScene() throws IOException {
         instructionSubScene = new GameSubscene();
         root.getChildren().add(instructionSubScene);
@@ -154,7 +154,7 @@ public class DeadWood extends Application {
             }
         });
     }
-//create history sub scene
+    //create history sub scene
     private void createDeveloperSubScene() throws IOException {
         developerSubScene = new GameSubscene();
         root.getChildren().add(developerSubScene);
@@ -185,7 +185,7 @@ public class DeadWood extends Application {
         });
 
     }
-//create startGame sub scene
+    //create startGame sub scene
     private void createStartGameSubScene() throws IOException {
         playSubScene = new GameSubscene();
         root.getChildren().add(playSubScene); // 8.22
