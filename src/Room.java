@@ -3,11 +3,11 @@ import java.util.Map;
 
 public class Room {
     private ArrayList<Room> adjacentRoom;
-
     private String name;
     private ArrayList<Part> partRoom;
     private Card card;
     private ArrayList<Takers>  takers;
+    private ArrayList<LevelUp> levelUpsList;
     private Takers getTaker;
     private int markers;
     private int x ;
@@ -16,7 +16,6 @@ public class Room {
     private int w ;
     boolean cardFace ;
     private int cardNumber;
-
 
     public Room(String name, int x , int y, int h , int w ) {
         this.name = name;
@@ -33,19 +32,19 @@ public class Room {
     public int getNumberOfTaker(){
         return this.markers;
     }
-    public void removeOneTaker(){
-        this.markers = this.markers -1;
-    }
 
     public void setTakers(ArrayList<Takers>  takers) {
         this.markers = takers.size();
         this.takers = takers;
     }
 
-//    public int getTakerX(){
-//        return this.getTaker.getX();
-//    }
+    public ArrayList<LevelUp> getLevelUpsList() {
+    return levelUpsList;
+    }
 
+    public void setLevelUpsList(ArrayList<LevelUp> levelUpsList) {
+        this.levelUpsList = levelUpsList;
+    }
 
     public int getCardNumber(){
         return this.cardNumber;
@@ -58,12 +57,12 @@ public class Room {
     public void setCardFace(boolean cardFace) {
         this.cardFace = cardFace;
     }
+
     public boolean getCardFace(){
         return this.cardFace;
     }
-
-    // should br in poartRoom Arraylist
-  public int getX(){
+    // should br in partRoom Arraylist
+    public int getX(){
         return this.x;
    }
     public int getY(){
@@ -75,25 +74,13 @@ public class Room {
     public int getW(){
         return this.w;
     }
-
+    // remove taker
+    public void removeOneTaker(){
+        this.markers = this.markers -1;
+    }
     //settingCard for rooms
     public void setCard(Card card) {
         this.card = card;
-    }
-
-    public void decrementMarkers(){
-        this.markers = this.markers - 1 ;
-    }
-    public int getMarkers(){
-        return this.markers;
-    }
-
-    public void printCard() {
-        System.out.println("name : " + this.name + " card :" + this.card.getCardName() + "Budget :" + this.card.getBudget());
-    }
-
-    public boolean getIsClosed(){
-        return this.markers <= 0;
     }
 
     public int getBudget() {
@@ -113,19 +100,7 @@ public class Room {
         }
         return list;
     }
-// print room's jobs ( not the on the card)
-//    public void printPartRooms(int level) {
-//
-//        for (int i = 0 ; i< level ; i++) {
-//            String  levelToString = Integer.toString(i);
-//            for (Part partList : this.partRoom) {
-//                if (partList.toString().contains(levelToString)) {
-//                    System.out.println(partList.toString());
-//                }
-//            }
-//        }
-//    }
-// getting the part of the room
+    //get rooms part, such as jobs.
     public ArrayList<String> getPartRooms(int level) {
         ArrayList<String> list = new ArrayList<String>();
         for (int i = 0 ; i<=level ; i++) {
@@ -138,17 +113,6 @@ public class Room {
         }
         return list;
     }
-//    public Part getPartRoomsByName(String name) {
-//        ArrayList<String> list = new ArrayList<String>();
-//            for (Part part : this.partRoom) {
-//                if (part.getName().contains(name)) {
-//                   return part;
-//            }
-//        }
-//        return null ;
-//    }
-
-
     public void setPartRoom(ArrayList<Part> partList) {
         this.partRoom = partList;
     }
@@ -156,8 +120,6 @@ public class Room {
     public ArrayList<Part> getPartRoom() {
         return partRoom;
     }
-
-
     //get adjacent from room list
     public ArrayList<Room> getAdjacentRoom() {
 
@@ -167,7 +129,6 @@ public class Room {
     public void setAdjacentRoom(ArrayList<Room> rooms) {
         this.adjacentRoom = rooms;
     }
-
     //getting player name
     public String getName() {
         return this.name;
@@ -176,21 +137,6 @@ public class Room {
     public String toString() {
         return this.name;
     }
-
-// print acts onn the card.
-//    public void printCardPartRooms(int level) {
-//
-//        // loop through adjacentRoom
-//        // and print the name
-//        for (int i = 0 ; i< level ; i++) {
-//            String  levelToString = Integer.toString(i);
-//            for (Part partList : this.card.getCardPart()) {
-//                if (partList.toString().contains(levelToString)) {
-//                    System.out.println(partList.toString());
-//                }
-//            }
-//        }
-//    }
     // getting the on card jobs.
     public ArrayList<Part> getCardPartRooms(int level) {
         var list = new ArrayList<Part>();
@@ -231,22 +177,9 @@ public class Room {
         return count;
     }
 
-
-
-//    public String getChosenCardPartByName(String chosen) {
-//
-//
-//        // loop through adjacentRoom
-//        // and print the name
-//
-//            for (CardPart partList : this.card.getCardPart()) {
-//                if (partList.toString().contains(chosen)) {
-//                    return partList.toString();
-//                }
-//            }
-//
-//        return null;
-//    }
-
+    //get closed room
+    public boolean getIsClosed(){
+        return this.markers <= 0;
+    }
 }
 

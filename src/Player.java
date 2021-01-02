@@ -4,7 +4,6 @@ class Player {
     private int tokens;
     private int rank;
     private Room location;
-
     private boolean OnCard;
     private boolean OffCard;
     private String name;
@@ -42,8 +41,6 @@ class Player {
         // special thing here.
         setLocation(room);
     }
-    //set job
-
 
     public void setLocation(Room location){
         this.location = location;
@@ -53,11 +50,9 @@ class Player {
         return location;
     }
 
-
     public String getName(){
         return name;
     }
-
 
     public int getCredit() {
         return credit;
@@ -84,7 +79,6 @@ class Player {
         this.tokens = tokens;
     }
 
-
     public int getRank() {
         return rank;
     }
@@ -92,7 +86,6 @@ class Player {
     public void setRank(int rank) {
         this.rank = rank;
     }
-
 
     public void setOnCard(boolean set){
         this.OnCard = set;
@@ -107,10 +100,6 @@ class Player {
         return this.OffCard;
     }
 
-    public void calculateScore(int rank, int score, int credit) {
-
-    }
-
     //upgrade with credit
     public void upGrade_Credit( int credit) {
         this.credit = this.credit- credit;
@@ -119,14 +108,6 @@ class Player {
     //upgrade with dollar
     public void upGrade_dollar(int dollars) {
 this.dollars = this.dollars- dollars;
-    }
-
-    //rehearsal tokens+1
-    public void rehearsal(int tokens) {
-    }
-
-    public void location(String room) {
-
     }
 
 

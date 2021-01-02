@@ -17,11 +17,6 @@ public class Takers {
      this.h = h ;
      this.w = w ;
  }
-
-    public int getNumber() {
-        return number;
-    }
-
     public int getX() {
         return x;
     }

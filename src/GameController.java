@@ -18,10 +18,8 @@ public class GameController {
     //passing the xml and
     public GameController() {
      //giving the xml file
-
         board = new Board("board.xml", "cards.xml");
         view = new Game();
-
     }
     //getting numbers of player with a view box
     public int showViewAndGetDays(){
@@ -46,16 +44,6 @@ public class GameController {
         if(numbersOfPlayer<=3){
             return 3;
         }
-        // example on how to change buttons per player turn
-//        this.view.getPlay().setText("2 player");
-//        this.view.getPlay().setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//                onPlayerCountReceived(2);
-//            }
-//        });
-//
-//        this.view.getPlay1().setVisible(false);
     return 4;
     }
     //setting the card for each room and setting the level of player based on the number of player
@@ -65,11 +53,11 @@ public class GameController {
         int h = 0;
         int w = 0;
         setList();
-        // initializeing the players
+        // initializing the players
         for (int i = 0; i < numbersOfPlayer; i++) {
             // move most of this to Player constructor
-            playerList.get(i).setCredit(0);
-            playerList.get(i).setDollars(0);
+            playerList.get(i).setCredit(100);
+            playerList.get(i).setDollars(100);
             playerList.get(i).setRank(1);
             playerList.get(i).setTokens(0);
             playerList.get(i).setOffCard(false);
@@ -77,11 +65,11 @@ public class GameController {
             playerList.get(i).setJob(null);
             playerList.get(i).setWork(false);
             playerList.get(i).setLocation(board.getStartingRoom());
+
         }
             //set takers and set card face
         for (Room room: this.list) {
             room.setCardFace(false);
-
             if (room.getTakers() != null) {
 
             for (Takers takers : room.getTakers()) {
@@ -92,8 +80,6 @@ public class GameController {
                 var takerButton = this.view.addTaker(x,y,w,h);
                 takers.setView(takerButton);
             }
-
-            //  room.getTakers().get(0).getView().setVisible(false);
         }
     }
         setRoomCardDisplay();
@@ -223,20 +209,6 @@ return numbersOfPlayer;
             this.view.playerDice(x, y, h, w, playerList.get(i).getRank() - 1, i);
         }
     }
-    //print end gme summery
-    private void endGameSummery() {
-        ArrayList<String> list = new ArrayList<>();
-        for(int i = 0 ; i< playerList.size();i++){
-            Player player = playerList.get(i);
-            list.add(setFinalResultString(player.getName(),player.getRank(),player.getDollars(),player.getCredit()));
-        }
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("The summary");
-        alert.setHeaderText("Who is the winner ? ");
-        alert.setContentText(Arrays.toString(list.toArray()));
-
-        alert.showAndWait();
-    }
     //making player information board as a string
     public String getPlayerInfoFormat(String name , int level, String work, int money, int credit,int tokens ){
         String outPutString = "Name: "+ name
@@ -269,9 +241,9 @@ return numbersOfPlayer;
     //using credit to level up and set the cost
     public void creditLevelCalculation(Player player, HashMap<Integer,Integer> map, int currentPlayer, String information){
         this.view.informationBoard.setText(information);
-
         for(int i = player.getRank() ; i <= map.size();i++) {
-            if (i == player.getRank()  && map.size() >= player.getRank()  && map.get(i) < player.getCredit()) {
+            int nextLevel = i+1;
+            if (i == player.getRank()  && map.size() >= player.getRank()  && map.get(nextLevel) < player.getCredit()) {
 
 
                 this.view.button.setText("Level" + (player.getRank() + 1));
@@ -287,8 +259,8 @@ return numbersOfPlayer;
                     }
                 });
 
-            } else if (i == player.getRank() + 1 && map.size() >= player.getRank() + 1 && map.get(i) < player.getCredit()) {
-                this.view.button1.setText("Level" + (player.getRank() + 2));
+            } else if (i == player.getRank() + 1 && map.size() >= player.getRank() + 1 && map.get(nextLevel) < player.getCredit()) {
+                this.view.button1.setText("Level" + (player.getRank() + 1));
                 this.view.button1.setVisible(true);
                 int finalI = i;
                 this.view.button1.setOnAction(new EventHandler<ActionEvent>() {
@@ -302,7 +274,7 @@ return numbersOfPlayer;
                     }
                 });
 
-            }else if (i == player.getRank() + 2 && map.size() >= player.getRank() + 2 && map.get(i) < player.getCredit()) {
+            }else if (i == player.getRank() + 2 && map.size() >= player.getRank() + 2 && map.get(nextLevel) < player.getCredit()) {
                 this.view.button2.setText("Level" + (player.getRank() + 3));
                 this.view.button2.setVisible(true);
                 int finalI = i;
@@ -310,6 +282,34 @@ return numbersOfPlayer;
                     @Override
                     public void handle(ActionEvent event) {
                         player.setRank((player.getRank() + 3));
+                        player.upGrade_Credit(map.get((player.getRank())));
+                        DisplayAllPlayer();
+                        afterLevelUp(currentPlayer, player);
+                    }
+                });
+            }else if (i == player.getRank() + 3 && map.size() >= player.getRank() + 3 && map.get(nextLevel) < player.getCredit()) {
+                this.view.button3.setText("Level" + (player.getRank() + 4));
+                this.view.button3.setVisible(true);
+                int finalI = i;
+                this.view.button3.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        player.setRank((player.getRank() + 4));
+                        player.upGrade_Credit(map.get((player.getRank())));
+                        DisplayAllPlayer();
+                        afterLevelUp(currentPlayer, player);
+
+                    }
+                });
+
+            }else if (i == player.getRank() + 4 && map.size() >= player.getRank() + 4 && map.get(nextLevel) < player.getCredit()) {
+                this.view.button4.setText("Level" + (player.getRank() + 5));
+                this.view.button4.setVisible(true);
+                int finalI = i;
+                this.view.button4.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        player.setRank((player.getRank() + 5));
                         player.upGrade_Credit(map.get((player.getRank())));
                         DisplayAllPlayer();
                         afterLevelUp(currentPlayer, player);
@@ -324,7 +324,8 @@ return numbersOfPlayer;
         this.view.informationBoard.setText(information);
 
         for(int i = player.getRank() ; i <= map.size();i++) {
-            if (i == player.getRank()  && map.size() >= player.getRank()  && map.get(i) < player.getDollars()) {
+            int nextLevel = i+1;
+            if (i == player.getRank()  && map.size() >= player.getRank()  && map.get(nextLevel) < player.getDollars()) {
 
 
                 this.view.button.setText("Level" + (player.getRank() + 1));
@@ -340,7 +341,7 @@ return numbersOfPlayer;
                     }
                 });
 
-            } else if (i == player.getRank() + 1 && map.size() >= player.getRank() + 1 && map.get(i) < player.getDollars()) {
+            } else if (i == player.getRank() + 1 && map.size() >= player.getRank() + 1 && map.get(nextLevel) < player.getDollars()) {
                 this.view.button1.setText("Level" + (player.getRank() + 2));
                 this.view.button1.setVisible(true);
                 int finalI = i;
@@ -354,8 +355,7 @@ return numbersOfPlayer;
 
                     }
                 });
-System.out.println((player.getRank()+3)+"   "+map.size()+"    "+map.get(i)+"  "+player.getDollars());
-            }else if (i == player.getRank() + 2 && map.size() >= player.getRank() + 2 && map.get(i) < player.getDollars()) {
+            }else if (i == player.getRank() + 2 && map.size() >= player.getRank() + 2 && map.get(nextLevel) < player.getDollars()) {
                 this.view.button2.setText("Level" + (player.getRank() + 3));
                 this.view.button2.setVisible(true);
                 int finalI = i;
@@ -368,30 +368,60 @@ System.out.println((player.getRank()+3)+"   "+map.size()+"    "+map.get(i)+"  "+
                         afterLevelUp(currentPlayer, player);
                     }
                 });
+            }else if (i == player.getRank() + 3 && map.size() >= player.getRank() + 3 && map.get(nextLevel) < player.getDollars()) {
+                this.view.button3.setText("Level" + (player.getRank() + 4));
+                this.view.button3.setVisible(true);
+                int finalI = i;
+                this.view.button3.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        player.setRank((player.getRank() + 4));
+                        player.upGrade_dollar(map.get((player.getRank())));
+                        DisplayAllPlayer();
+                        afterLevelUp(currentPlayer, player);
+                    }
+                });
+            }else if (i == player.getRank() + 4 && map.size() >= player.getRank() + 4 && map.get(nextLevel) < player.getDollars()) {
+                    this.view.button4.setText("Level" + (player.getRank() + 5));
+                    this.view.button4.setVisible(true);
+                    int finalI = i;
+                    this.view.button4.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            player.setRank((player.getRank() + 5));
+                            player.upGrade_dollar(map.get((player.getRank())));
+                            DisplayAllPlayer();
+                            afterLevelUp(currentPlayer, player);
+                        }
+                    });
+                }
             }
         }
-    }
     //chose credit or dollar to level up
     public void LevelUp (Player player, int currentPlayer  ){
+        int rank = 0 ;
+        int cost = 0 ;
         HashMap<Integer,Integer> dollar = new HashMap<Integer, Integer>();
         HashMap<Integer,Integer> credit = new HashMap<Integer, Integer>();
-        dollar.put(2,4);
-        dollar.put(3,10);
-        dollar.put(4,18);
-        dollar.put(5,28);
-        dollar.put(6,40);
-        credit.put(2,5);
-        credit.put(3,10);
-        credit.put(4,15);
-        credit.put(5,20);
-        credit.put(6,25);
+        var levelUpList = player.getLocation().getLevelUpsList();
+        for(LevelUp list : levelUpList){
+            rank = Integer.parseInt(list.toString().substring(5,6));
+            cost = Integer.parseInt(list.toString().substring(12,14).replace(" ",""));
+            if(list.toString().contains("Dollar")){
+                dollar.put(rank,cost);
+            }else {
+                credit.put(rank,cost);
+            }
+        }
+
         this.view.informationBoard.setText("Upgrade with dollar or credit?");
 
-        String dollarInformation = "cost table \n dollar:\n Level: 1  Cost:" + dollar.get(2)+"\n Level: 2  Cost:" + dollar.get(3)+
-                "\n Level: 3  Cost:" + dollar.get(4)+"\n Level: 4  Cost:" + dollar.get(5)+"\n Level: 5  Cost:" + dollar.get(6);
+        String dollarInformation = "cost table \n dollar:\n Level: 2  Cost:" + dollar.get(2)+"\n Level: 3  Cost:" + dollar.get(3)+
+                "\n Level: 4  Cost:" + dollar.get(4)+"\n Level: 5  Cost:" + dollar.get(5)+"\n Level: 6  Cost:" + dollar.get(6);
 
-        String creditInformation = "cost table \n credit:\n Level: 1  Cost:" + credit.get(2)+"\n Level: 2  Cost:" + credit.get(3)+
-                "\n Level: 3  Cost:" +credit.get(4)+"\n Level: 4  Cost:" + credit.get(5)+"\n Level: 5  Cost:" + credit.get(6);
+        String creditInformation = "cost table \n credit:\n Level: 2  Cost:" + credit.get(2)+"\n Level: 3  Cost:" + credit.get(3)+
+                "\n Level: 4  Cost:" +credit.get(4)+"\n Level: 5  Cost:" + credit.get(5)+"\n Level: 6  Cost:" + credit.get(6);
+        System.out.println(dollarInformation);
 
         if(dollar.get(player.getRank()+1)< player.getDollars()){
             this.view.button.setText("Dollar");
@@ -1131,12 +1161,18 @@ System.out.println((player.getRank()+3)+"   "+map.size()+"    "+map.get(i)+"  "+
         }
         return openRooms <= 1;
     }
+    //print end gme summery
+    private void endGameSummery() {
+        ArrayList<String> list = new ArrayList<>();
+        for(int i = 0 ; i< playerList.size();i++){
+            Player player = playerList.get(i);
+            list.add(setFinalResultString(player.getName(),player.getRank(),player.getDollars(),player.getCredit()));
+        }
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("The summary");
+        alert.setHeaderText("Who is the winner ? ");
+        alert.setContentText(Arrays.toString(list.toArray()));
+
+        alert.showAndWait();
+    }
 }
-
-
-
-
-
-
-
-

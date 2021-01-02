@@ -7,6 +7,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 
 public class XMLBoardReader {
@@ -25,8 +26,8 @@ public class XMLBoardReader {
             }
             return doc;
         } // exception handling
-
     }
+
 
     // reads data from XML file and prints data
     public List<Room> readBoardData(Document d) {
@@ -52,7 +53,8 @@ public class XMLBoardReader {
             Room currentRoom = new Room(roomName,Integer.parseInt(x),Integer.parseInt(y),Integer.parseInt(h),Integer.parseInt(w));
             rooms.add(currentRoom);
         }
-
+        var LevelUp = new ArrayList<LevelUp>();
+//        var creditLevelUp = new ArrayList<CreditLevelUp>();
 
         // fill in adjacent rooms
         for (int i = 0; i < sets.getLength(); i++) {
@@ -69,6 +71,7 @@ public class XMLBoardReader {
             var roomParts = new ArrayList<Part>(); // this should be like class Part
             var adjacentRooms = new ArrayList<Room>();
             var takersArrayList = new ArrayList<Takers>();
+
 
           //  var takeRooms = new ArrayList<Room>();
             if (takesList.getLength() > 0){
@@ -172,32 +175,24 @@ public class XMLBoardReader {
                 }
             }
 
-//            if(upgradesList.getLength()>0) {
-//                NodeList upgrade = ((Element) upgradesList.item(0)).getElementsByTagName("upgrade");
-//                for (int k = 0; k < upgrade.getLength(); k++) {
-//                    Node sub_upGrades = upgrade.item(k);
-//                        String level = sub_upGrades.getAttributes().getNamedItem("level").getNodeValue();
-//                        String currency = sub_upGrades.getAttributes().getNamedItem("currency").getNodeValue();
-//                        String cost = sub_upGrades.getAttributes().getNamedItem("amt").getNodeValue();
-////                        System.out.println(level + currency+cost);
-//
-//                        if( currency.equals("dollar")){
-//                            DollarLevelUp levelUpDollar = new  DollarLevelUp(Integer.parseInt(level));
-//                            levelUpDollar.dollarCost(Integer.parseInt(cost));
-//                            LevelUpDollar.add(levelUpDollar);
-//                        }
-//                        if(currency.equals("credit")){
-//                            CreditLevelUp creditLevelUp = new CreditLevelUp(Integer.parseInt(level));
-//                            creditLevelUp.creditCost(Integer.parseInt(cost));
-//                            LevelUpDollar.add(creditLevelUp);
-//                        }
-////                        System.out.println("credit"+LevelUpCredit.toString());
-////                    System.out.println("dollor"+ LevelUpCredit.toString());
-//
-//                }
-//            }
+            if(upgradesList.getLength()>0) {
+                NodeList upgrade = ((Element) upgradesList.item(0)).getElementsByTagName("upgrade");
+                for (int k = 0; k < upgrade.getLength(); k++) {
+                    Node sub_upGrades = upgrade.item(k);
+                        String level = sub_upGrades.getAttributes().getNamedItem("level").getNodeValue();
+                        String currency = sub_upGrades.getAttributes().getNamedItem("currency").getNodeValue();
+                        String cost = sub_upGrades.getAttributes().getNamedItem("amt").getNodeValue();
+                        System.out.println(level + currency+cost);
+                        LevelUpCurrency currencyEnum = LevelUpCurrency.Dollar;
+                        if(currency.equals("credit")){
+                            currencyEnum = LevelUpCurrency.Credit;
 
-
+                        }
+                    LevelUp levelUpDollar = new  LevelUp(Integer.parseInt(level),Integer.parseInt(cost),currencyEnum);
+                    LevelUp.add(levelUpDollar);
+                }
+                currentRoom.setLevelUpsList(LevelUp);
+            }
 
         }
 
